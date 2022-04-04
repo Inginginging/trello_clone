@@ -29,10 +29,16 @@ interface IForm {
 
 function ToDoList() {
   //여러개의 input을 하나의 객체로 보여줌 => form이 복잡할때 유용
-  const { register, handleSubmit, formState } = useForm<IForm>();
+  const { register, handleSubmit, formState, setError } = useForm<IForm>();
   //form이 valid할때 실행되는 함수. handleSubmit의 인자로 들어감.
-  const onValid = (data: any) => {
-    console.log(data);
+  const onValid = (data: IForm) => {
+    if (data.pw !== data.pw2) {
+      setError(
+        "pw2",
+        { message: "password is not the same" },
+        { shouldFocus: true }
+      );
+    }
   };
   //formState: form의 상태를 보여주는 메서드
   console.log(formState.errors);
