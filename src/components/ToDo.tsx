@@ -17,6 +17,15 @@ function ToDo({ text, category, id }: IToDo) {
       ];
     });
   };
+  const deleteToDo = () => {
+    setToDos((oldToDos) => {
+      const targetIdx = oldToDos.findIndex((toDo) => toDo.id === id);
+      return [
+        ...oldToDos.slice(0, targetIdx),
+        ...oldToDos.slice(targetIdx + 1),
+      ];
+    });
+  };
   return (
     <li>
       <span>{text}</span>
@@ -29,6 +38,7 @@ function ToDo({ text, category, id }: IToDo) {
       {category !== Categories.TO_DO && (
         <button onClick={() => onClick(Categories.TO_DO)}>To Do</button>
       )}
+      <button onClick={deleteToDo}>❌</button>
     </li>
   );
 }
