@@ -13,15 +13,17 @@ export const toDoState = atom<IToDo[]>({
   default: [],
 });
 
+export const categoryState = atom({
+  key: "category",
+  default: "TO_DO",
+});
+
 export const toDoSelector = selector({
   key: "toDoSelector",
   get: ({ get }) => {
     const toDos = get(toDoState);
+    const category = get(categoryState);
     //조건을 만족하는 toDo들의 배열로 return.=>derived state(파생된 state)
-    return [
-      toDos.filter((toDo) => toDo.category === "TO_DO"),
-      toDos.filter((toDo) => toDo.category === "DOING"),
-      toDos.filter((toDo) => toDo.category === "DONE"),
-    ];
+    return toDos.filter((toDo) => toDo.category === category);
   },
 });
