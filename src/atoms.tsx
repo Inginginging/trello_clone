@@ -1,10 +1,17 @@
 import { atom, selector } from "recoil";
 
+//category의 type을 열거형으로 지정해주는 enum
+export enum Categories {
+  "TO_DO" = "TO_DO",
+  "DOING" = "DOING",
+  "DONE" = "DONE",
+}
+
 //Todo의 type
 export interface IToDo {
   text: string;
   id: number;
-  category: "TO_DO" | "DOING" | "DONE";
+  category: Categories;
 }
 
 //ToDos의 state. 처음엔 빈 배열. IToDo형식의 객체가 추가됨.
@@ -15,7 +22,7 @@ export const toDoState = atom<IToDo[]>({
 
 export const categoryState = atom({
   key: "category",
-  default: "TO_DO",
+  default: Categories.TO_DO,
 });
 
 export const toDoSelector = selector({
