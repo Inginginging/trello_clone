@@ -1,4 +1,7 @@
+import { useEffect } from "react";
+import { useRecoilState } from "recoil";
 import { createGlobalStyle } from "styled-components";
+import { toDoState } from "./atoms";
 import ToDoList from "./components/ToDoList";
 
 const GlobalStyle = createGlobalStyle`
@@ -67,6 +70,16 @@ a {
 `;
 
 function App() {
+  const [toDos, setToDos] = useRecoilState(toDoState);
+  //get local storage items
+  useEffect(() => {
+    const oldToDos = localStorage.getItem("toDos");
+    setToDos(JSON.parse(oldToDos as any));
+  }, []);
+  //set local storage
+  useEffect(() => {
+    localStorage.setItem("toDos", JSON.stringify(toDos));
+  }, [toDos]);
   return (
     <>
       <GlobalStyle />
