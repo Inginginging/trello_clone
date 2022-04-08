@@ -12,8 +12,7 @@ import DraggableCard from "./Components/DraggableCard";
 
 const Wrapper = styled.div`
   display: flex;
-  max-width: 680px;
-  width: 100%;
+  width: 100vw;
   margin: 0 auto;
   justify-content: center;
   align-items: center;
@@ -21,25 +20,32 @@ const Wrapper = styled.div`
 `;
 
 const Boards = styled.div`
-  display: grid;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
   width: 100%;
   gap: 10px;
-  grid-template-columns: repeat(3, 1fr);
 `;
 
 function App() {
   const [toDos, setToDos] = useRecoilState(toDoState);
-  //draggableId ,destination과 source는 onDragEnd func이 가지는 args에서 제공하는 property
-  const onDragEnd = ({ draggableId, destination, source }: DropResult) => {
-    if (!destination) return; //card가 제자리 이동일때
-    /*setToDos((oldToDos) => {
-      const temp = [...oldToDos];
-      // 1) Delete item on source.index
-      temp.splice(source.index, 1);
-      // 2) Put back the item on the destination.index
-      temp.splice(destination.index, 0, draggableId);
-      return temp;
-    });*/
+  //info는 onDragEnd func이 가지는 args에서 제공하는 property
+  const onDragEnd = (info: DropResult) => {
+    console.log(info);
+    const { destination, source, draggableId } = info;
+    //moving on the same board
+    if (destination?.droppableId === source.droppableId) {
+      setToDos((originalToDos) => {
+        const temp = [...originalToDos[source.droppableId]]; //originalToDos는 obj이므로, source의 droppableId에 해당하는 key의  value를 복사
+        temp.splice(source.index, 1);
+        temp.splice(destination.index, 0, draggableId);
+        //toDoState는 obj이므로 obj를 return 해야함
+        return {
+          ...originalToDos,
+          [source.droppableId]: temp,
+        };
+      });
+    }
   };
   return (
     <DragDropContext onDragEnd={onDragEnd}>
