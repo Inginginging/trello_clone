@@ -33,16 +33,31 @@ function App() {
   const onDragEnd = (info: DropResult) => {
     console.log(info);
     const { destination, source, draggableId } = info;
+    if (!destination) return;
     //moving on the same board
-    if (destination?.droppableId === source.droppableId) {
-      setToDos((originalToDos) => {
-        const temp = [...originalToDos[source.droppableId]]; //originalToDos는 obj이므로, source의 droppableId에 해당하는 key의  value를 복사
+    if (destination.droppableId === source.droppableId) {
+      setToDos((originalBoards) => {
+        const temp = [...originalBoards[source.droppableId]]; //originalBoards는 obj이므로, source의 droppableId에 해당하는 key의  value를 복사
         temp.splice(source.index, 1);
         temp.splice(destination.index, 0, draggableId);
         //toDoState는 obj이므로 obj를 return 해야함
         return {
-          ...originalToDos,
+          ...originalBoards,
           [source.droppableId]: temp,
+        };
+      });
+    }
+    //moving across the boards
+    if (destination.droppableId !== source.droppableId) {
+      setToDos((originalBoards) => {
+        const sourceTemp = [...originalBoards[source.droppableId]]; //source board copy
+        const destinationTemp = [...originalBoards[destination.droppableId]]; //destination board copy
+        sourceTemp.splice(source.index, 1);
+        destinationTemp.splice(destination.index, 0, draggableId);
+        return {
+          ...originalBoards,
+          [source.droppableId]: sourceTemp,
+          [destination.droppableId]: destinationTemp,
         };
       });
     }
