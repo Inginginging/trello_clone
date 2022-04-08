@@ -37,8 +37,9 @@ function App() {
     if (destination.droppableId === source.droppableId) {
       setToDos((originalBoards) => {
         const temp = [...originalBoards[source.droppableId]]; //originalBoards는 obj이므로, source의 droppableId에 해당하는 key의  value를 복사
+        const tempObj = temp[source.index]; //이동시킬 toDo Obj 복사
         temp.splice(source.index, 1);
-        temp.splice(destination.index, 0, draggableId);
+        temp.splice(destination.index, 0, tempObj);
         //toDoState는 obj이므로 obj를 return 해야함
         return {
           ...originalBoards,
@@ -51,8 +52,9 @@ function App() {
       setToDos((originalBoards) => {
         const sourceTemp = [...originalBoards[source.droppableId]]; //source board copy
         const destinationTemp = [...originalBoards[destination.droppableId]]; //destination board copy
+        const tempObj = sourceTemp[source.index]; //toDo obj copy
         sourceTemp.splice(source.index, 1);
-        destinationTemp.splice(destination.index, 0, draggableId);
+        destinationTemp.splice(destination.index, 0, tempObj);
         return {
           ...originalBoards,
           [source.droppableId]: sourceTemp,
