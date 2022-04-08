@@ -31,7 +31,6 @@ function App() {
   const [toDos, setToDos] = useRecoilState(toDoState);
   //info는 onDragEnd func이 가지는 args에서 제공하는 property
   const onDragEnd = (info: DropResult) => {
-    console.log(info);
     const { destination, source, draggableId } = info;
     if (!destination) return;
     //moving on the same board
