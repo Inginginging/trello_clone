@@ -4,13 +4,13 @@ import DraggableCard from "./DraggableCard";
 
 const Wrapper = styled.div`
   width: 300px;
-  padding: 20px 10px;
   padding-top: 10px;
   background-color: ${(props) => props.theme.boardColor};
   border-radius: 5px;
   min-height: 300px;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 `;
 const Title = styled.h2`
   text-align: center;
@@ -32,6 +32,7 @@ const Area = styled.div<IAreaProps>`
       : props.theme.boardColor};
   flex-grow: 1;
   transition: background-color 0.5s ease-in-out;
+  padding: 20px;
 `;
 
 interface IBoardProps {
