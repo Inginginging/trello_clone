@@ -9,12 +9,12 @@ const Card = styled.div`
   background-color: ${(props) => props.theme.cardColor};
 `;
 
-interface IDraggableCard {
+interface IDraggableCardProps {
   toDo: string;
   index: number;
 }
 
-function DraggableCard({ toDo, index }: IDraggableCard) {
+function DraggableCard({ toDo, index }: IDraggableCardProps) {
   console.log(toDo, "has rendered");
   return (
     <Draggable key={toDo} draggableId={toDo} index={index}>
