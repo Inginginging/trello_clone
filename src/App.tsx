@@ -3,6 +3,7 @@ import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import { IToDoState, toDoState } from "./atoms";
+import AddBoardForm from "./Components/AddBoardForm";
 import Board from "./Components/Board";
 import Trashcan from "./Components/TrashCan";
 
@@ -80,19 +81,22 @@ function App() {
     localStorage.setItem("toDos", JSON.stringify(toDos));
   }, [toDos]);
   return (
-    <DragDropContext onDragEnd={onDragEnd}>
-      <Wrapper>
-        <Boards>
-          {
-            /*toDoState에서 toDos는 객체이므로, key들을 가져와 각 key들의 value값을 mapping하여 Board로 props 전달 */
-            Object.keys(toDos).map((boardId) => (
-              <Board key={boardId} boardId={boardId} toDos={toDos[boardId]} />
-            ))
-          }
-        </Boards>
-        <Trashcan />
-      </Wrapper>
-    </DragDropContext>
+    <>
+      <AddBoardForm />
+      <DragDropContext onDragEnd={onDragEnd}>
+        <Wrapper>
+          <Boards>
+            {
+              /*toDoState에서 toDos는 객체이므로, key들을 가져와 각 key들의 value값을 mapping하여 Board로 props 전달 */
+              Object.keys(toDos).map((boardId) => (
+                <Board key={boardId} boardId={boardId} toDos={toDos[boardId]} />
+              ))
+            }
+          </Boards>
+          <Trashcan />
+        </Wrapper>
+      </DragDropContext>
+    </>
   );
 }
 
