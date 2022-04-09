@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
-import { toDoState } from "./atoms";
+import { IToDoState, toDoState } from "./atoms";
 import Board from "./Components/Board";
 
 const Wrapper = styled.div`
@@ -58,6 +58,15 @@ function App() {
       });
     }
   };
+  //saving local storage
+  useEffect(() => {
+    const savedToDos = localStorage.getItem("toDos");
+    if (savedToDos === null || savedToDos === "{}") return;
+    setToDos(JSON.parse(savedToDos as any));
+  }, []);
+  useEffect(() => {
+    localStorage.setItem("toDos", JSON.stringify(toDos));
+  }, [toDos]);
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       <Wrapper>
