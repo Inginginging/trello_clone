@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { DragDropContext, DropResult } from "react-beautiful-dnd";
+import { DragDropContext, Droppable, DropResult } from "react-beautiful-dnd";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import { IToDoState, toDoState } from "./atoms";
@@ -46,17 +46,27 @@ function App() {
     <Container>
       <AddBoardForm />
       <DragDropContext onDragEnd={(info) => onDragEnd(info, setToDos)}>
-        <Wrapper>
-          <Boards>
-            {
-              /*toDoState에서 toDos는 객체이므로, key들을 가져와 각 key들의 value값을 mapping하여 Board로 props 전달 */
-              Object.keys(toDos).map((boardId) => (
-                <Board key={boardId} boardId={boardId} toDos={toDos[boardId]} />
-              ))
-            }
-          </Boards>
-          <Trashcan />
-        </Wrapper>
+        <Droppable droppableId="boards" direction="horizontal" type="boards">
+          {(provided) => (
+            <Wrapper>
+              <Boards ref={provided.innerRef}>
+                {
+                  /*toDoState에서 toDos는 객체이므로, key들을 가져와 각 key들의 value값을 mapping하여 Board로 props 전달 */
+                  Object.keys(toDos).map((boardId, index) => (
+                    <Board
+                      key={boardId}
+                      boardId={boardId}
+                      toDos={toDos[boardId]}
+                      index={index}
+                    />
+                  ))
+                }
+                {provided.placeholder}
+              </Boards>
+            </Wrapper>
+          )}
+        </Droppable>
+        <Trashcan />
       </DragDropContext>
     </Container>
   );

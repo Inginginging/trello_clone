@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { DropResult } from "react-beautiful-dnd";
 import { SetterOrUpdater } from "recoil";
 import { IToDoState } from "./atoms";
@@ -8,8 +7,22 @@ export const onDragEnd = (
   info: DropResult,
   setToDos: SetterOrUpdater<IToDoState>
 ) => {
-  const { destination, source } = info;
+  const { destination, source, type, draggableId } = info;
   if (!destination) return;
+  //moving Board
+  if (type === "boards") {
+    if (destination.index === source.index) return;
+    setToDos((originalBoards) => {
+      const boardIds = Object.keys(originalBoards); //기존 boardId들을 받아옴
+      boardIds.splice(source.index, 1);
+      boardIds.splice(destination.index, 0, draggableId);
+      const newBoards: IToDoState = {};
+      boardIds.forEach((key) => {
+        newBoards[key] = originalBoards[key];
+      });
+      return newBoards;
+    });
+  }
   //trashcan
   if (destination.droppableId === "trashcan") {
     setToDos((originalBoards) => {
