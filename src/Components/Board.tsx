@@ -53,6 +53,21 @@ const Form = styled.form`
     margin: 0 auto;
   }
 `;
+const DelBtn = styled.button`
+  border: none;
+  cursor: pointer;
+  background-color: transparent;
+  margin-bottom: 9px;
+  font-size: 20px;
+  position: absolute;
+  right: 25px;
+`;
+const BoardTitle = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+`;
 
 interface IForm {
   toDo: string;
@@ -76,9 +91,19 @@ function Board({ toDos, boardId }: IBoardProps) {
 
     setValue("toDo", "");
   };
+  const handleDelete = (boardId: string) => {
+    setToDos((originalToDos) => {
+      const temp = { ...originalToDos }; //typeof(temp) = obj
+      delete temp[boardId];
+      return temp;
+    });
+  };
   return (
     <Wrapper>
-      <Title>{boardId}</Title>
+      <BoardTitle>
+        <Title>{boardId}</Title>
+        <DelBtn onClick={() => handleDelete(boardId)}>x</DelBtn>
+      </BoardTitle>
       <Form onSubmit={handleSubmit(onValid)}>
         <input
           {...register("toDo", { required: true })}
