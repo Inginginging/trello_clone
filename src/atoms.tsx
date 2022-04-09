@@ -5,7 +5,7 @@ export interface IToDo {
   text: string;
 }
 //toDoState의 type
-interface IToDoState {
+export interface IToDoState {
   [key: string]: IToDo[];
 }
 
