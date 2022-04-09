@@ -8,8 +8,19 @@ const AddBoard = styled.form`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 80%;
-  height: 10%;
+  width: 45%;
+  position: absolute;
+  top: 200px;
+  input {
+    font-size: 16px;
+    border: 3px solid ${(props) => props.theme.boardColor};
+    background-color: transparent;
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+    margin: 0 auto;
+  }
 `;
 
 interface IForm {
@@ -17,7 +28,7 @@ interface IForm {
 }
 
 function AddBoardForm() {
-  const { register, handleSubmit } = useForm<IForm>();
+  const { register, handleSubmit, setValue } = useForm<IForm>();
   const setToDos = useSetRecoilState(toDoState);
   const onValid = ({ board }: IForm) => {
     const newBoard = board;
@@ -27,6 +38,7 @@ function AddBoardForm() {
         [newBoard]: [],
       };
     });
+    setValue("board", "");
   };
   return (
     <AddBoard onSubmit={handleSubmit(onValid)}>
